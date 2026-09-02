@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; line-height: 1.5; }
+    .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .vuln { border-left: 5px solid #dc2626; }
+    .safe { border-left: 5px solid #16a34a; }
+    input { padding: 6px; margin: 5px 0; }
+    button { padding: 8px 16px; border: none; border-radius: 6px; color: white; cursor: pointer; }
+    .vuln button { background: #dc2626; }
+    .safe button { background: #16a34a; }
+    code { background: #f3f4f6; padding: 2px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h2>Welcome, {{ user }}</h2>
+  <p>Balance: <b>${{ balance }}</b></p>
+  <p><a href="{{ url_for('logout') }}">Log out</a> | <a href="{{ url_for('home') }}">Home</a></p>
+
+  <div class="card vuln">
+    <h3>Vulnerable Transfer (no CSRF token)</h3>
+    <p>This form posts to <code>/transfer/vulnerable</code>, which has no protection.
+       Try opening <code>attacker/attacker.html</code> in this same browser while logged in —
+       it will silently trigger this endpoint.</p>
+    <form method="post" action="{{ url_for('transfer_vulnerable') }}">
+      <input type="text" name="to" placeholder="Recipient" value="bob">
+      <input type="number" name="amount" placeholder="Amount" value="100">
+      <button type="submit">Send (Unsafe)</button>
+    </form>
+  </div>
+
+  <div class="card safe">
+    <h3>Protected Transfer (CSRF token required)</h3>
+    <p>This form posts to <code>/transfer/protected</code>, which validates a
+       per-session token an attacker's page cannot read or guess.</p>
+    <form method="post" action="{{ url_for('transfer_protected') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="text" name="to" placeholder="Recipient" value="bob">
+      <input type="number" name="amount" placeholder="Amount" value="100">
+      <button type="submit">Send (Safe)</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <title>CSRF Demo & Mitigation Tool</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 60px auto; line-height: 1.5; }
+    a.button { display: inline-block; margin-top: 15px; padding: 10px 18px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; }
+    .note { background: #f3f4f6; padding: 12px; border-radius: 6px; margin-top: 20px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>CSRF Demo & Mitigation Tool</h1>
+  <p>By Siddhesh Malekar</p>
+
+  {% if user %}
+    <p>Logged in as <b>{{ user }}</b>.</p>
+    <a class="button" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+    &nbsp; <a href="{{ url_for('logout') }}">Log out</a>
+  {% else %}
+    <p>Log in as <b>alice / password123</b> to try the demo.</p>
+    <a class="button" href="{{ url_for('login') }}">Log In</a>
+  {% endif %}
+
+  <div class="note">
+    This app demonstrates a vulnerable money-transfer endpoint and a
+    CSRF-protected version of the same endpoint, plus a sample attacker
+    page (<code>attacker/attacker.html</code>) that tries to exploit the
+    vulnerable one automatically when opened.
+  </div>
+</body>
+</html>

